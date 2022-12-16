@@ -1,0 +1,31 @@
+{
+    "name": "castle crawler",
+    "description": "",
+    "dependencies": {
+        "device": "*",
+        "animation": "*",
+        "color-coded-tilemap": "*"
+    },
+    "files": [
+        "main.blocks",
+        "main.ts",
+        "README.md",
+        "tilemap.g.jres",
+        "tilemap.g.ts"
+    ],
+    "testFiles": [
+        "test.ts"
+    ],
+    "targetVersions": {
+        "branch": "v0.15.16",
+        "tag": "v0.15.16",
+        "commits": "https://github.com/microsoft/pxt-arcade/commits/8b7233254cf52189d669a0590117a7824e1b3513",
+        "target": "1.11.37",
+        "pxt": "5.30.41",
+        "targetId": "arcade"
+    },
+    "supportedTargets": [
+        "arcade"
+    ],
+    "preferredEditor": "blocksprj"
+}
