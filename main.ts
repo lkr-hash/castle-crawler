@@ -20,17 +20,17 @@ function snake_anim () {
 }
 controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
     if ((mySprite.tileKindAt(TileDirection.Top, assets.tile`tile4`) || mySprite.tileKindAt(TileDirection.Top, assets.tile`tile5`)) && vertical == -1 || (mySprite.tileKindAt(TileDirection.Right, assets.tile`tile4`) || mySprite.tileKindAt(TileDirection.Left, assets.tile`tile5`)) || (mySprite.tileKindAt(TileDirection.Right, assets.tile`tile6`) || mySprite.tileKindAt(TileDirection.Left, assets.tile`tile7`))) {
-        game.showLongText("it's a health vending machine!", DialogLayout.Bottom)
+        game.showLongText("这是一台健康值售卖机。", DialogLayout.Bottom)
         if (info.score() > 4) {
             if (info.life() < 10) {
                 info.changeScoreBy(-5)
                 music.magicWand.play()
                 info.changeLifeBy(1)
             } else {
-                game.showLongText("but your health is already full.", DialogLayout.Bottom)
+                game.showLongText("你的健康值已经达到上限", DialogLayout.Bottom)
             }
         } else {
-            game.showLongText("you don't have enough money.", DialogLayout.Bottom)
+            game.showLongText("你没有足够的钱", DialogLayout.Bottom)
         }
     } else if (mySprite.tileKindAt(TileDirection.Top, sprites.dungeon.greenSwitchUp) && vertical == -1) {
         music.pewPew.play()
@@ -39,12 +39,12 @@ controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
         tiles.setTileAt(tiles.getTileLocation(34, 4), sprites.dungeon.floorDarkDiamond)
         tiles.setTileAt(tiles.getTileLocation(34, 5), sprites.dungeon.greenInnerNorthWest)
         tiles.setWallAt(tiles.getTileLocation(34, 4), false)
-        game.showLongText("a door opened somewhere!", DialogLayout.Bottom)
+        game.showLongText("某处打开了一扇门", DialogLayout.Bottom)
     } else if (mySprite.tileKindAt(TileDirection.Top, sprites.dungeon.chestClosed) && vertical == -1 || mySprite.tileKindAt(TileDirection.Right, sprites.dungeon.chestClosed) && horizontal == 1 || mySprite.tileKindAt(TileDirection.Left, sprites.dungeon.chestClosed) && horizontal == -1) {
         reward = randint(0, 4)
         music.jumpUp.play()
         tiles.setTileAt(tiles.getTileLocation(23, 1), sprites.dungeon.chestOpen)
-        game.showLongText("you obtained...", DialogLayout.Bottom)
+        game.showLongText("你得到了...", DialogLayout.Bottom)
         mySprite.setImage(treasure[reward])
         game.showLongText(text_list[reward], DialogLayout.Bottom)
         game.over(true)
@@ -518,63 +518,6 @@ function player_anim () {
         `)
 }
 sprites.onOverlap(SpriteKind.Projectile, SpriteKind.Enemy, function (sprite, otherSprite) {
-    if (dd == 0) {
-        coin = sprites.create(img`
-            . . b b b b . . 
-            . b 5 5 5 5 b . 
-            b 5 d 3 3 d 5 b 
-            b 5 3 5 5 1 5 b 
-            c 5 3 5 5 1 d c 
-            c d d 1 1 d d c 
-            . f d d d d f . 
-            . . f f f f . . 
-            `, SpriteKind.Food)
-        animation.runImageAnimation(
-        coin,
-        [img`
-            . . b b b b . . 
-            . b 5 5 5 5 b . 
-            b 5 d 3 3 d 5 b 
-            b 5 3 5 5 1 5 b 
-            c 5 3 5 5 1 d c 
-            c d d 1 1 d d c 
-            . f d d d d f . 
-            . . f f f f . . 
-            `,img`
-            . . . b b b . . 
-            . . b 5 5 5 b . 
-            . b 5 d 3 d 5 b 
-            . b 5 3 5 1 5 b 
-            . c 5 3 5 1 d c 
-            . c 5 d 1 d d c 
-            . . f d d d f . 
-            . . . f f f . . 
-            `,img`
-            . . . b b . . . 
-            . . b 5 5 b . . 
-            . . b 1 1 b . . 
-            . . b 5 5 b . . 
-            . . b d d b . . 
-            . . c d d c . . 
-            . . c 3 3 c . . 
-            . . . f f . . . 
-            `,img`
-            . . . b b b . . 
-            . . b 5 5 5 b . 
-            . b 5 d 3 d 5 b 
-            . b 5 1 5 3 5 b 
-            . c d 1 5 3 5 c 
-            . c d d 1 d 5 c 
-            . . f d d d f . 
-            . . . f f f . . 
-            `],
-        200,
-        true
-        )
-        coin.setPosition(otherSprite.x, otherSprite.y)
-        otherSprite.destroy(effects.coolRadial, 500)
-        scene.cameraShake(4, 100)
-    }
     if (dd == 1) {
         coin = sprites.create(img`
             . . b b b b . . 
@@ -629,7 +572,8 @@ sprites.onOverlap(SpriteKind.Projectile, SpriteKind.Enemy, function (sprite, oth
         true
         )
         coin.setPosition(otherSprite.x, otherSprite.y)
-        otherSprite.destroy(effects.fire, 500)
+        otherSprite.destroy(effects.coolRadial, 500)
+        projectile.destroy()
         scene.cameraShake(4, 100)
     }
     if (dd == 2) {
@@ -687,6 +631,7 @@ sprites.onOverlap(SpriteKind.Projectile, SpriteKind.Enemy, function (sprite, oth
         )
         coin.setPosition(otherSprite.x, otherSprite.y)
         otherSprite.destroy(effects.warmRadial, 500)
+        projectile.destroy()
         scene.cameraShake(4, 100)
     }
     if (dd == 3) {
@@ -743,7 +688,66 @@ sprites.onOverlap(SpriteKind.Projectile, SpriteKind.Enemy, function (sprite, oth
         true
         )
         coin.setPosition(otherSprite.x, otherSprite.y)
-        otherSprite.destroy(effects.blizzard, 500)
+        otherSprite.destroy(effects.halo, 500)
+        projectile.destroy()
+        scene.cameraShake(4, 100)
+    }
+    if (dd == 4) {
+        coin = sprites.create(img`
+            . . b b b b . . 
+            . b 5 5 5 5 b . 
+            b 5 d 3 3 d 5 b 
+            b 5 3 5 5 1 5 b 
+            c 5 3 5 5 1 d c 
+            c d d 1 1 d d c 
+            . f d d d d f . 
+            . . f f f f . . 
+            `, SpriteKind.Food)
+        animation.runImageAnimation(
+        coin,
+        [img`
+            . . b b b b . . 
+            . b 5 5 5 5 b . 
+            b 5 d 3 3 d 5 b 
+            b 5 3 5 5 1 5 b 
+            c 5 3 5 5 1 d c 
+            c d d 1 1 d d c 
+            . f d d d d f . 
+            . . f f f f . . 
+            `,img`
+            . . . b b b . . 
+            . . b 5 5 5 b . 
+            . b 5 d 3 d 5 b 
+            . b 5 3 5 1 5 b 
+            . c 5 3 5 1 d c 
+            . c 5 d 1 d d c 
+            . . f d d d f . 
+            . . . f f f . . 
+            `,img`
+            . . . b b . . . 
+            . . b 5 5 b . . 
+            . . b 1 1 b . . 
+            . . b 5 5 b . . 
+            . . b d d b . . 
+            . . c d d c . . 
+            . . c 3 3 c . . 
+            . . . f f . . . 
+            `,img`
+            . . . b b b . . 
+            . . b 5 5 5 b . 
+            . b 5 d 3 d 5 b 
+            . b 5 1 5 3 5 b 
+            . c d 1 5 3 5 c 
+            . c d d 1 d 5 c 
+            . . f d d d f . 
+            . . . f f f . . 
+            `],
+        200,
+        true
+        )
+        coin.setPosition(otherSprite.x, otherSprite.y)
+        otherSprite.destroy(effects.ashes, 500)
+        projectile.destroy()
         scene.cameraShake(4, 100)
     }
 })
@@ -903,11 +907,11 @@ img`
     `
 ]
 text_list = [
-"a golden sword!",
-"a golden orb!",
-"a toothbrush!",
-"a tv remote!",
-"a new hat!"
+"一把金色的剑！",
+"一个金色的球！",
+"牙刷！",
+"电视遥控器！",
+"一顶新的帽子！"
 ]
 info.setScore(0)
 info.setLife(10)
@@ -1463,58 +1467,58 @@ forever(function () {
     if (dd == 1) {
         if (controller.B.isPressed()) {
             projectile = sprites.createProjectileFromSprite(img`
-                . . . 8 8 . . . 
-                . . 8 9 9 8 . . 
-                . 8 9 1 1 9 8 . 
+                . . 8 8 8 8 . . 
+                . 8 9 9 9 9 8 . 
+                8 9 9 1 1 9 9 8 
                 8 9 1 1 1 1 9 8 
                 8 9 1 1 1 1 9 8 
-                . 8 9 1 1 9 8 . 
-                . . 8 9 9 8 . . 
-                . . . 8 8 . . . 
+                8 9 9 1 1 9 9 8 
+                . 8 9 9 9 9 8 . 
+                . . 8 8 8 8 . . 
                 `, mySprite, horizontal * 300, vertical * 300)
             projectile.startEffect(effects.coolRadial)
         }
     } else if (dd == 2) {
         if (controller.B.isPressed()) {
             projectile = sprites.createProjectileFromSprite(img`
-                . . . 2 2 . . . 
-                . . 2 3 3 2 . . 
-                . 2 3 1 1 3 2 . 
+                . . 2 2 2 2 . . 
+                . 2 3 3 3 3 2 . 
+                2 3 3 1 1 3 3 2 
                 2 3 1 1 1 1 3 2 
                 2 3 1 1 1 1 3 2 
-                . 2 3 1 1 3 2 . 
-                . . 2 3 3 2 . . 
-                . . . 2 2 . . . 
+                2 3 3 1 1 3 3 2 
+                . 2 3 3 3 3 2 . 
+                . . 2 2 2 2 . . 
                 `, mySprite, horizontal * 300, vertical * 300)
-            projectile.startEffect(effects.fire)
+            projectile.startEffect(effects.warmRadial)
         }
     } else if (dd == 3) {
         if (controller.B.isPressed()) {
             projectile = sprites.createProjectileFromSprite(img`
-                . . . c c . . . 
-                . . c 2 2 c . . 
-                . c 2 4 4 2 c . 
-                c 2 4 4 4 4 2 c 
-                c 2 4 4 4 4 2 c 
-                . c 2 4 4 2 c . 
-                . . c 2 2 c . . 
-                . . . c c . . . 
+                . . 4 4 4 4 . . 
+                . 4 5 5 5 5 4 . 
+                4 5 5 1 1 5 5 4 
+                4 5 1 1 1 1 5 4 
+                4 5 1 1 1 1 5 4 
+                4 5 5 1 1 5 5 4 
+                . 4 5 5 5 5 4 . 
+                . . 4 4 4 4 . . 
                 `, mySprite, horizontal * 300, vertical * 300)
-            projectile.startEffect(effects.warmRadial)
+            projectile.startEffect(effects.halo)
         }
     } else if (dd == 4) {
         if (controller.B.isPressed()) {
             projectile = sprites.createProjectileFromSprite(img`
-                . . . c c . . . 
-                . . c 8 8 c . . 
-                . c 8 9 9 8 c . 
-                c 8 9 9 9 9 8 c 
-                c 8 9 9 9 9 8 c 
-                . c 8 9 9 8 c . 
-                . . c 8 8 c . . 
-                . . . c c . . . 
+                . . 6 6 6 6 . . 
+                . 6 7 7 7 7 6 . 
+                6 7 7 1 1 7 7 6 
+                6 7 1 1 1 1 7 6 
+                6 7 1 1 1 1 7 6 
+                6 7 7 1 1 7 7 6 
+                . 6 7 7 7 7 6 . 
+                . . 6 6 6 6 . . 
                 `, mySprite, horizontal * 300, vertical * 300)
-            projectile.startEffect(effects.blizzard)
+            projectile.startEffect(effects.ashes)
         }
     }
 })
